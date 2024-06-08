@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext, useMemo } from "react";
+import { BACKEND_URL } from "../../config";
+import { UserDataContext } from "../../utils/UserDataContext";
 import styles from "./Recommendation.module.css";
 
 export default function Recommendation({
@@ -7,6 +9,7 @@ export default function Recommendation({
   author,
   location,
   rating,
+  friendid,
   children,
 }: {
   poster: string;
@@ -14,8 +17,19 @@ export default function Recommendation({
   author: string;
   location: string;
   rating: number;
+  friendid: number;
   children: React.ReactNode;
 }) {
+  const { userData, setUserData } = useContext(UserDataContext);
+
+  const isAuthenticated = useMemo(() => {
+    if (userData !== null) return true;
+    const userDataLocalStorage = localStorage.getItem("data");
+    if (userDataLocalStorage !== null) {
+      setUserData(JSON.parse(userDataLocalStorage));
+      return true;
+    }
+  }, []);
   return (
     <div className={styles.recommendation}>
       <div className={styles.poster} style={{ backgroundImage: `url(${poster})` }}></div>
@@ -23,7 +37,36 @@ export default function Recommendation({
         <div className={styles.titleAuthor}>
           <h2>{title}</h2>
           <span>&bull;</span>
-          <p data-author={author} className={styles.author}></p>
+          <p
+            data-author={author}
+            onClick={() => {
+              if (!isAuthenticated) return;
+
+              const userDataLocalStorage = localStorage.getItem("data") ?? "{}";
+              const email = userData?.email ?? JSON.parse(userDataLocalStorage).email;
+
+              fetch(BACKEND_URL + "/add-friend", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  email,
+                  friendid,
+                }),
+              })
+                .then((response) => response.json())
+                .then((response) => {
+                  if (response.error) return;
+                  alert(`Friend with id ${friendid} added!`);
+                })
+                .catch((error) => {
+                  alert(error);
+                });
+            }}
+            className={styles.author}
+          ></p>
         </div>
 
         <div className={styles.detail}>

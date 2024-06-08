@@ -5,6 +5,7 @@ import "./index.css";
 import Friends from "./pages/Friends";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Movies from "./pages/Movies";
 import Signup from "./pages/Signup";
 import { IUserData, UserDataContext } from "./utils/UserDataContext";
 import authorise from "./utils/authorise";
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
   { path: "login", loader: authorise, element: <Login /> },
   { path: "signup", loader: authorise, element: <Signup /> },
   { path: "friends", loader: authorise, element: <Friends /> },
+  { path: "movies", loader: authorise, element: <Movies /> },
 ]);
 
 export default function App() {

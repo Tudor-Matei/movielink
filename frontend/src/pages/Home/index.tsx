@@ -32,8 +32,8 @@ export default function Home() {
               </Link>
             </>
           ) : (
-            <Link to="/logout">
-              <button className="button--primary">See movies</button>
+            <Link to="/movies">
+              <button className="button--primary">See Movies</button>
             </Link>
           )}
         </div>
@@ -47,6 +47,7 @@ export default function Home() {
             title="Inception"
             author="John Doe"
             location="Cinema City, Timiș, Timișoara"
+            friendid={2}
             rating={4.7}
           >
             "Just watched 'Inception' – mind-blowing! The plot twists kept me on the edge of my seat, and the visuals
@@ -57,6 +58,7 @@ export default function Home() {
             title="Inception"
             author="John Doe"
             location="Cinema City, Timiș, Timișoara"
+            friendid={2}
             rating={4.7}
           >
             "Just watched 'Inception' – mind-blowing! The plot twists kept me on the edge of my seat, and the visuals
@@ -67,6 +69,7 @@ export default function Home() {
             title="Inception"
             author="John Doe"
             location="Cinema City, Timiș, Timișoara"
+            friendid={2}
             rating={4.7}
           >
             "Just watched 'Inception' – mind-blowing! The plot twists kept me on the edge of my seat, and the visuals

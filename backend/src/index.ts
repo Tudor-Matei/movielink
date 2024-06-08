@@ -9,7 +9,6 @@ import validateInput from "utils/validateInput";
 const app = express();
 
 const PORT = 4000;
-const THIRTY_MINUTES = 30 * 60 * 1000;
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -83,8 +82,8 @@ app.post("/signup", async (req, res) => {
       }
 
       const token: string = generateToken({ fname, lname, email });
-      console.log("Generated token", token);
-      res.cookie("user", token, { httpOnly: true, maxAge: THIRTY_MINUTES });
+      "Generated token", token;
+      res.cookie("user", token, { httpOnly: true });
       res.status(201).json({ error: null, data: "User created successfully" });
     });
   } catch (err) {
@@ -104,7 +103,7 @@ app.post("/login", (req, res) => {
 
   const { email, password } = req.body;
 
-  console.log(req.cookies);
+  req.cookies;
   if (req.cookies && req.cookies.user) {
     return res.status(401).json({ error: "You are already logged in", data: null });
   }
@@ -139,13 +138,13 @@ app.post("/login", (req, res) => {
     const token = generateToken({ fname: user.fname, lname: user.lname, email });
 
     // Set HTTP-only cookie with JWT
-    res.cookie("user", token, { httpOnly: true, maxAge: 30 * 60 * 1000 }); // 30 minutes expiration
+    res.cookie("user", token, { httpOnly: true }); // 30 minutes expiration
     res.status(200).json({ error: null, data: { fname: user.fname, lname: user.lname, email: user.email } });
   });
 });
 
 app.get("/logout", (req, res) => {
-  res.clearCookie("user");
+  res.clearCookie("user", { httpOnly: true });
 
   res.status(200).json({ error: null, data: true });
 });
@@ -155,14 +154,14 @@ app.post("/add-friend", (req, res) => {
     return res.status(401).json({ error: "Bad input. Missing body.", data: null });
   }
 
-  if (!req.body.friendid || !req.body.useremail) {
+  if (!req.body.friendid || !req.body.email) {
     return res.status(401).json({ error: "Bad input. Missing user/friend id.", data: null });
   }
 
-  const { useremail, friendid } = req.body;
+  const { email, friendid } = req.body;
 
   const query = "INSERT INTO friends (useremail, friendid) VALUES (?, ?)";
-  connection.query(query, [useremail, friendid], (err, results) => {
+  connection.query(query, [email, friendid], (err, results) => {
     if (err) {
       console.error("Error inserting into MySQL:", err);
       return res.status(500).json({ error: "Database error", data: null });
@@ -173,44 +172,28 @@ app.post("/add-friend", (req, res) => {
 });
 
 // Endpoint to get user's friends
-app.get("/get-friends", (req, res) => {
+app.post("/get-friends", (req, res) => {
   if (!req.body) {
     return res.status(401).json({ error: "Bad input. Missing body.", data: null });
   }
 
-  if (!req.body.useremail) {
+  if (!req.body.email) {
     return res.status(401).json({ error: "The user email is missing.", data: null });
   }
 
-  const userEmail = req.body.useremail;
+  const userEmail = req.body.email;
 
   // Query to get user's friends' IDs
   const friendIdsQuery =
-    "SELECT friendId FROM friends INNER JOIN users ON friends.userId = users.id WHERE users.email = ?";
+    "SELECT fname, lname, email FROM users WHERE id IN (SELECT friendid FROM friends WHERE useremail = ?)";
 
-  connection.query(friendIdsQuery, [userEmail], (err, friendIdsResults) => {
+  connection.query(friendIdsQuery, [userEmail], (err, results) => {
     if (err) {
       console.error("Error querying friend IDs:", err);
       return res.status(500).json({ error: "Database error", data: null });
     }
 
-    // Extract friend IDs from the results
-    const friendIds = friendIdsResults.map((result) => result.friendId);
-
-    if (friendIds.length === 0) {
-      return res.status(200).json({ error: null, data: [] });
-    }
-
-    // Query to get friend details (fname, lname, email)
-    const friendDetailsQuery = "SELECT fname, lname, email FROM users WHERE id IN (?)";
-    connection.query(friendDetailsQuery, [friendIds], (err, friendDetailsResults) => {
-      if (err) {
-        console.error("Error querying friend details:", err);
-        return res.status(500).json({ error: null, data: "Database error" });
-      }
-
-      res.status(200).json({ error: null, data: friendDetailsResults });
-    });
+    return res.status(200).json({ error: null, data: results });
   });
 });
 

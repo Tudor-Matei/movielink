@@ -51,7 +51,7 @@ export default function Login() {
 
           localStorage.setItem("data", JSON.stringify(jsonResponse.data));
           setUserData(jsonResponse.data as IUserData);
-          location.pathname = "/dashboard";
+          location.pathname = "/friends";
         })
         .catch((error) => {
           alert("Logging in couldn't hapen because an internal server error has occurred.");

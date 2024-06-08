@@ -11,7 +11,7 @@ import useRedirectOnAuth from "../../utils/useRedirectOnAuth";
 import { IFormStateTypeError } from "./FormStateType";
 
 export default function Signup() {
-  const isLoggedIn = useRedirectOnAuth("/shop", true);
+  const isLoggedIn = useRedirectOnAuth("/", true);
   const { setUserData } = useContext<IUserDataContext>(UserDataContext);
 
   const formik = useFormik({

@@ -1,0 +1,5 @@
+.movies {
+  padding: 5rem var(--side-padding);
+  display: flex;
+  gap: 2rem;
+}
