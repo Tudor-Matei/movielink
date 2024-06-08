@@ -6,9 +6,10 @@ import "../../forms.css";
 import { IUserData, UserDataContext } from "../../utils/UserDataContext";
 import isEmailValid from "../../utils/isEmailValid";
 import checkIfFormIsValid from "../../utils/isFormValid";
+import useRedirectOnAuth from "../../utils/useRedirectOnAuth";
 
 export default function Login() {
-  const isLoggedIn = false; //useRedirectOnAuth("/shop", true);
+  const isLoggedIn = useRedirectOnAuth("/", true);
   const { setUserData } = useContext(UserDataContext);
 
   const formik = useFormik({
@@ -24,10 +25,13 @@ export default function Login() {
       return errors;
     },
     onSubmit: (values) => {
-      fetch(BACKEND_URL, {
+      fetch(BACKEND_URL + "/login", {
         method: "POST",
         body: JSON.stringify(values),
         credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
         .then(async (response) => {
           let jsonResponse: { error: string | null; data?: IUserData } = { error: null, data: undefined };
@@ -39,7 +43,7 @@ export default function Login() {
             console.error(error, response.body);
           }
 
-          if (jsonResponse.error !== null && jsonResponse.data === undefined) {
+          if (jsonResponse.error !== null) {
             alert(jsonResponse.error);
             formik.setSubmitting(false);
             return;
@@ -47,7 +51,7 @@ export default function Login() {
 
           localStorage.setItem("data", JSON.stringify(jsonResponse.data));
           setUserData(jsonResponse.data as IUserData);
-          location.pathname = "/shop";
+          location.pathname = "/dashboard";
         })
         .catch((error) => {
           alert("Logging in couldn't hapen because an internal server error has occurred.");

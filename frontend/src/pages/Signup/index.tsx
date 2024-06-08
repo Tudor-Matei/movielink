@@ -3,13 +3,15 @@ import { useContext, useMemo } from "react";
 import "../../forms.css";
 
 import { Link } from "react-router-dom";
+import { BACKEND_URL } from "../../config";
 import { IUserData, IUserDataContext, UserDataContext } from "../../utils/UserDataContext";
 import isEmailValid from "../../utils/isEmailValid";
 import checkIfFormIsValid from "../../utils/isFormValid";
+import useRedirectOnAuth from "../../utils/useRedirectOnAuth";
 import { IFormStateTypeError } from "./FormStateType";
 
 export default function Signup() {
-  const isLoggedIn = false; //useRedirectOnAuth("/shop", true);
+  const isLoggedIn = useRedirectOnAuth("/shop", true);
   const { setUserData } = useContext<IUserDataContext>(UserDataContext);
 
   const formik = useFormik({
@@ -31,10 +33,13 @@ export default function Signup() {
       return errors;
     },
     onSubmit: (values) => {
-      fetch("http://localhost/libraria/php/signup.php", {
+      fetch(BACKEND_URL + "/signup", {
         method: "POST",
         body: JSON.stringify(values),
         credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
       }).then(async (response) => {
         let jsonResponse: { error: string | null; data?: IUserData } = { error: null, data: undefined };
         try {
@@ -45,15 +50,16 @@ export default function Signup() {
           return;
         }
 
-        if (jsonResponse.error !== null && jsonResponse.data === undefined) {
+        if (jsonResponse.error !== null && jsonResponse.data === null) {
           alert(jsonResponse.error);
           formik.setSubmitting(false);
           return;
         }
 
-        localStorage.setItem("data", JSON.stringify(jsonResponse.data));
-        setUserData(jsonResponse.data as IUserData);
-        location.pathname = "/profile";
+        const userData: IUserData = { email: values.email, fname: values.fname, lname: values.lname };
+        setUserData(userData);
+        localStorage.setItem("data", JSON.stringify(values));
+        location.pathname = "/";
       });
     },
   });

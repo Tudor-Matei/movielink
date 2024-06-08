@@ -10,7 +10,6 @@ export interface IUserData {
   fname: string;
   lname: string;
   email: string;
-  userid: string;
 }
 
 export interface IUserDataContext {
