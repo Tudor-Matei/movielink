@@ -1,0 +1,70 @@
+.recommendation {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--accent-6);
+  border-radius: 25px;
+  color: var(--accent-4);
+  overflow: hidden;
+  max-width: 400px;
+}
+
+.poster {
+  flex: 0.5;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  width: 100%;
+  min-height: 300px;
+}
+
+.titleAuthor {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.author {
+  text-decoration: underline;
+  cursor: pointer;
+  transition: 300ms linear;
+}
+
+.author:hover {
+  text-decoration: none;
+  color: var(--accent-3);
+}
+.author::before {
+  content: attr(data-author);
+  position: relative;
+}
+
+.author:hover::before {
+  content: "Add as friend";
+}
+
+.details {
+  flex: 1;
+  padding: 2rem;
+}
+
+.detailIcon {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  vertical-align: top;
+}
+
+.detail {
+  margin: 0.8rem 0;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.detail p {
+  width: 300px;
+  line-height: 26px;
+}

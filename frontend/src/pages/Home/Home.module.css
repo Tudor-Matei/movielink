@@ -1,0 +1,49 @@
+.landing {
+  display: flex;
+}
+
+.landingTextPart {
+  padding: 10rem 3rem 10rem var(--side-padding);
+}
+
+.landingTextPart h1 {
+  font-size: 64px;
+  margin-bottom: 3rem;
+}
+
+.landingTextPart,
+.landingImage {
+  flex: 1;
+}
+
+.landingImage {
+  background: url("../../assets/landing.jpg") center center no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.landingImage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(84deg, #0e1509 19%, #0000002b);
+}
+
+.logInButton {
+  margin-left: 1rem;
+}
+
+.recommendations {
+  display: flex;
+  gap: 2rem;
+}
+
+.recommendationsList {
+  background-color: var(--accent-1);
+  padding: 3rem var(--side-padding);
+  color: var(--accent-4);
+}
+
+.recommendationsList h1 {
+  margin: 4rem 0;
+}

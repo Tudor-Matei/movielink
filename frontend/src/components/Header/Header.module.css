@@ -1,0 +1,31 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  padding: 1rem var(--side-padding);
+  border-bottom: 2px solid var(--border-bottom-header);
+  top: 0;
+}
+
+.headerLogoPart {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.headerHamburgerButton {
+  width: 25px;
+  height: 25px;
+  background: url("../../assets/icons/hamburger.svg") center center no-repeat;
+  background-size: contain;
+  margin-left: 2rem;
+  vertical-align: middle;
+}
+
+.headerLogo {
+  background: url("../../assets/logo.png") center center no-repeat;
+  width: 50px;
+  height: 50px;
+  background-size: contain;
+}

@@ -1,0 +1,78 @@
+:root {
+  --accent-1: #83ff37;
+  --accent-2: #e3ffd1;
+  --accent-3: #83b266;
+  --accent-4: #192711;
+  --accent-5: #0e1509;
+  --accent-6: #b0ff80;
+
+  --background: var(--accent-5);
+  --border-bottom-header: var(--accent-4);
+  --button-primary: var(--accent-1);
+  --button-text-primary: var(--accent-4);
+  --button-text-secondary: var(--accent-3);
+  --main-text-color: var(--accent-2);
+  --invalid-color: #ff4949;
+
+  --font: "Josefin Sans", Arial, sans-serif;
+  --side-padding: 7rem;
+
+  --button-border-radius: 25px;
+}
+
+html,
+body {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--background);
+  font-family: var(--font);
+  color: var(--main-text-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.button--primary {
+  background-color: var(--button-primary);
+  color: var(--button-text-primary);
+  border-radius: var(--button-border-radius);
+  font-family: var(--font);
+  padding: 0.5rem 3rem;
+  transition: background-color 300ms linear;
+}
+
+.button--primary:hover {
+  background-color: var(--accent-2);
+}
+
+.button--primary:active {
+  transform: translateY(3px);
+}
+
+.button--secondary {
+  background-color: transparent;
+  color: var(--button-text-secondary);
+  font-family: var(--font);
+}
